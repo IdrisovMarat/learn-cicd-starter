@@ -20,10 +20,12 @@ import (
 type apiConfig struct {
 	DB *database.Queries
 }
+
 func unused() {
-    // this function does nothing
-    // and is called nowhere
+	// this function does nothing
+	// and is called nowhere
 }
+
 //go:embed static/*
 var staticFiles embed.FS
 
