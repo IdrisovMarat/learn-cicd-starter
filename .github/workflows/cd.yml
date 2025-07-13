@@ -1,0 +1,23 @@
+name: continues development  # Название workflow
+
+on:  # Условия запуска
+  push:  # Срабатывает при push-е
+    branches: [main]  # Только в ветку main
+
+jobs:
+  Deploy:  # Задача "Развертывание"
+    runs-on: ubuntu-latest  # Запуск на последнем Ubuntu
+    steps:
+      # Шаг 1: Клонирование репозитория
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # Шаг 2: Установка Go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23.0'  # Последняя стабильная версия Go
+
+      # Шаг 3: Сборка приложения
+      - name: building app
+        run: ./scripts/buildprod.sh  # Запуск скрипта сборки
