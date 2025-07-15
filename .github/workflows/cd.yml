@@ -1,12 +1,12 @@
-name: continues development  # Название workflow
+name: Continuous Deployment
 
-on:  # Условия запуска
-  push:  # Срабатывает при push-е
-    branches: [main]  # Только в ветку main
+on:
+  push:
+    branches: [main]
 
 jobs:
-  Deploy:  # Задача "Развертывание"
-    runs-on: ubuntu-latest  # Запуск на последнем Ubuntu
+  Deploy:
+    runs-on: ubuntu-latest
     steps:
       # Шаг 1: Клонирование репозитория
       - name: Check out code
@@ -16,8 +16,21 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23.0'  # Последняя стабильная версия Go
+          go-version: '1.23.0'
 
-      # Шаг 3: Сборка приложения
-      - name: building app
-        run: ./scripts/buildprod.sh  # Запуск скрипта сборки
+      # Шаг 3: Сборка приложения (как в вашем задании)
+      - name: Building app
+        run: ./scripts/buildprod.sh
+
+      # Шаг 4: Аутентификация в GCP (точно по заданию)
+      - name: Set up GCP Auth
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          export_default_credentials: true
+
+      # Шаг 5: Сборка и отправка образа (точно по заданию)
+      - name: Build and push to Artifact Registry
+        run: |
+          gcloud builds submit --tag us-central1-docker.pkg.dev/notely-465909/notely-repo/notely-image:latest .
