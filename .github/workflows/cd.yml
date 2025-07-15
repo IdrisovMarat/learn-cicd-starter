@@ -8,21 +8,17 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      # Шаг 1: Клонирование репозитория
       - name: Check out code
         uses: actions/checkout@v4
 
-      # Шаг 2: Установка Go
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.23.0'
 
-      # Шаг 3: Сборка приложения (как в вашем задании)
       - name: Building app
         run: ./scripts/buildprod.sh
 
-      # Шаг 4: Аутентификация в GCP (точно по заданию)
       - name: Set up GCP Auth
         uses: google-github-actions/setup-gcloud@v1
         with:
@@ -30,7 +26,8 @@ jobs:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           export_default_credentials: true
 
-      # Шаг 5: Сборка и отправка образа (точно по заданию)
       - name: Build and push to Artifact Registry
         run: |
-          gcloud builds submit --tag us-central1-docker.pkg.dev/notely-465909/notely-repo/notely-image:latest .
+          gcloud builds submit \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --tag us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/notely-repo/notely-image:latest .
