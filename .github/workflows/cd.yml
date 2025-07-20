@@ -32,7 +32,7 @@ jobs:
       # Запуск миграций
       - name: Run migrations
         run: |
-          goose turso $DATABASE_URL up
+          ./scripts/migrateup.sh
 
       # Используем отдельные actions для аутентификации и настройки gcloud
       - name: Authenticate to Google Cloud
