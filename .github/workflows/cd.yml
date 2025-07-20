@@ -32,7 +32,7 @@ jobs:
       # Запуск миграций
       - name: Run migrations
         run: |
-          goose -dir migrations libsql "$DATABASE_URL" up
+          goose turso $DATABASE_URL up
 
       # Используем отдельные actions для аутентификации и настройки gcloud
       - name: Authenticate to Google Cloud
